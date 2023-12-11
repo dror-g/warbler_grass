@@ -13,7 +13,8 @@ use bevy::{
     },
 };
 
-use crate::warblers_plugin::GRASS_SHADER_HANDLE;
+//use crate::warblers_plugin::GRASS_SHADER_HANDLE;
+use crate::warblers_plugin::GrassAssets;
 #[derive(Resource)]
 pub struct GrassPipeline {
     shader: Handle<Shader>,
@@ -29,6 +30,7 @@ pub struct GrassPipeline {
 
 impl FromWorld for GrassPipeline {
     fn from_world(world: &mut World) -> Self {
+        let grass_assets = world.get_resource::<GrassAssets>().unwrap();
         let render_device = world.get_resource::<RenderDevice>().unwrap();
         let region_layout = render_device.create_bind_group_layout(&BindGroupLayoutDescriptor {
             label: Some("warbler_grass configuration layout"),
@@ -160,19 +162,25 @@ impl FromWorld for GrassPipeline {
                 count: None,
             }],
         });
-        let shader = GRASS_SHADER_HANDLE.typed::<Shader>();
+        //let shader = GRASS_SHADER_HANDLE.typed::<Shader>();
+        //if let Some(shader) = grass_assets.shader.clone_weak().typed::<Shader>() {
+        //if let Some(shader) = grass_assets.shader.clone_weak() {
+        let shader = grass_assets.shader.clone_weak();// {
         let mesh_pipeline = world.resource::<MeshPipeline>();
-        GrassPipeline {
-            shader,
-            mesh_pipeline: mesh_pipeline.clone(),
-            region_layout,
-            uniform_height_layout,
-            heights_texture_layout,
-            density_map_layout,
-            y_map_layout,
-            normal_map_layout,
-            color_layout,
-        }
+            GrassPipeline {
+                shader,
+                mesh_pipeline: mesh_pipeline.clone(),
+                region_layout,
+                uniform_height_layout,
+                heights_texture_layout,
+                density_map_layout,
+                y_map_layout,
+                normal_map_layout,
+                color_layout,
+            }
+        // } else {
+        //     panic!("Could not load grass shader");
+        // }
     }
 }
 impl SpecializedMeshPipeline for GrassPipeline {

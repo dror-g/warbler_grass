@@ -4,7 +4,8 @@ use bevy::{
     prelude::Color,
     render::{
         extract_component::ExtractComponent, mesh::Mesh, prelude::SpatialBundle, primitives::Aabb,
-        texture::Image, texture::DEFAULT_IMAGE_HANDLE,
+        //texture::Image, texture::DEFAULT_IMAGE_HANDLE,
+        texture::Image, texture::ImageSampler,
     },
 };
 
@@ -12,7 +13,7 @@ use crate::{
     map::DensityMap,
     map::NormalMap,
     map::YMap,
-    warblers_plugin::{GRASS_MESH_HANDLE, DEFAULT_NORMAL_MAP_HANDLE},
+    //warblers_plugin::{GRASS_MESH_HANDLE, DEFAULT_NORMAL_MAP_HANDLE},
 };
 
 /// This [`Bundle`] spawns a grass chunk in the world.
@@ -48,10 +49,14 @@ pub struct WarblersBundle {
 impl Default for WarblersBundle {
     fn default() -> Self {
         Self {
-            grass_mesh: GRASS_MESH_HANDLE.typed(),
-            y_map: DEFAULT_IMAGE_HANDLE.typed().into(),
-            normal_map: DEFAULT_NORMAL_MAP_HANDLE.typed().into(),
-            density_map: DEFAULT_IMAGE_HANDLE.typed().into(),
+            //grass_mesh: GRASS_MESH_HANDLE,
+            //y_map: DEFAULT_IMAGE_HANDLE.typed().into(),
+            //normal_map: DEFAULT_NORMAL_MAP_HANDLE,
+            grass_mesh: Handle::default(),
+            y_map: Image::default(),
+            normal_map: Handle::default(),
+            //density_map: DEFAULT_IMAGE_HANDLE.typed().into(),
+            density_map: Image::default(),
             height: WarblerHeight::Uniform(1.),
             grass_color: GrassColor::default(),
             aabb: Aabb::default(),

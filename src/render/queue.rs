@@ -23,7 +23,7 @@ pub(crate) fn queue_grass_buffers(
     material_meshes: Query<
         (
             Entity,
-            &MeshUniform,
+            &GlobalTransform,
             &Handle<Mesh>,
             Option<&UniformHeightFlag>,
         ),
@@ -41,7 +41,7 @@ pub(crate) fn queue_grass_buffers(
     for (view, mut opaque_phase) in &mut views {
         let view_key = msaa_key | MeshPipelineKey::from_hdr(view.hdr);
         let rangefinder = view.rangefinder3d();
-        for (entity, mesh_uniform, mesh_handle, has_uniform_height) in material_meshes.iter() {
+        for (entity, global_transform, mesh_handle, has_uniform_height) in material_meshes.iter() {
             if let Some(mesh) = meshes.get(mesh_handle) {
                 let mesh_key =
                     view_key | MeshPipelineKey::from_primitive_topology(mesh.primitive_topology);
@@ -54,7 +54,7 @@ pub(crate) fn queue_grass_buffers(
                     entity,
                     pipeline,
                     draw_function: draw_custom,
-                    distance: rangefinder.distance(&mesh_uniform.transform),
+                    distance: rangefinder.distance(&global_transform.compute_matrix()),
                 });
             }
         }

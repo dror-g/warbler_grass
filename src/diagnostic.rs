@@ -1,6 +1,8 @@
 use bevy::{
     diagnostic::{Diagnostic, DiagnosticId, Diagnostics, RegisterDiagnostic},
-    prelude::{Assets, ComputedVisibility, Handle, Plugin, Query, Res, Update},
+    //prelude::{Assets, ComputedVisibility, Handle, Plugin, Query, Res, Update},
+    // Split to InheritedVisibility and ViewVisibility
+    prelude::{Assets, ViewVisibility, Handle, Plugin, Query, Res, Update},
 };
 
 use crate::dithering::DitheredBuffer;
@@ -37,7 +39,7 @@ impl WarblerDiagnosticsPlugin {
 
     /// Calculates the amount of blades that are drawn this frame and logs them
     fn measure_blades(
-        blades: Query<(&Handle<DitheredBuffer>, &ComputedVisibility)>,
+        blades: Query<(&Handle<DitheredBuffer>, &ViewVisibility)>,
         dither: Res<Assets<DitheredBuffer>>,
         mut diagnostics: Diagnostics,
     ) {
